@@ -1,0 +1,18 @@
+- storing passwords on server
+    - password + salt -> hashed
+    - salt is constant
+    - store the salt with the hash
+    - SQL database
+    
+- login -> check server certificate
+    - 
+
+- transmit password/hash to server
+    - https
+
+- 
+
+Other Ideas:
+- reverse proxy - sets up a https certificate
+- gunicorn - runs a reverse proxy, gunicorn ssl bottle stockoverflow
+- just use ssl, unless it asks us to use.
