@@ -5,6 +5,7 @@
     It should exist as a separate layer to any database or data structure that you might be using
     Nothing here should be stateful, if it's stateful let the database handle it
 '''
+from pandas import read_hdf
 import view
 import random
 import sql
@@ -54,6 +55,7 @@ def login_check(username, password):
     # By default assume good creds
     login = True
     
+    #this needs to be chnaged to reflect whether the txtfile info matches
     if username != "admin": # Wrong Username
         err_str = "Incorrect Username"
         login = False
@@ -67,6 +69,50 @@ def login_check(username, password):
     else:
         return page_view("invalid", reason=err_str)
 
+#-----------------------------------------------------------------------------
+# Register
+#-----------------------------------------------------------------------------
+
+def register_form():
+    '''
+        register_form
+        Returns the view for the register_form
+    '''
+    return page_view("register")
+
+#-----------------------------------------------------------------------------
+
+# Check the register credentials and add them to the txt file if valid
+def register_check(username, password):
+    '''
+        register_check
+        Checks usernames and passwords are valid entries 
+
+        :: username :: The username
+        :: password :: The password
+
+        Returns either a view for valid credentials, or a view for invalid credentials
+    '''
+
+    # By default assume good creds
+    register = True
+    
+
+    if len(username) > 0 and len(password) > 0:
+        # add to the txt file
+        register = True
+        user_info = open("userDetails.txt", "a")
+        # this needs to be adjusted with hash and salt information + public key
+        user_info.write(username + "," + password +"\n")
+        user_info.close()
+    elif len(username) == 0 or len(password) == 0:
+        register = False
+        err_str = "Incorrect Details"
+
+    if register: 
+        return page_view("valid", name=username)
+    else:
+        return page_view("invalid", reason=err_str)
 #-----------------------------------------------------------------------------
 # About
 #-----------------------------------------------------------------------------
