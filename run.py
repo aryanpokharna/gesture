@@ -15,7 +15,7 @@
 #-----------------------------------------------------------------------------
 import os
 import sys
-from bottle import run
+from bottle import run, Bottle
 
 #-----------------------------------------------------------------------------
 # You may eventually wish to put these in their own directories and then load 
@@ -31,6 +31,7 @@ import controller
 
 # It might be a good idea to move the following settings to a config file and then load them
 # Change this to your IP address or 0.0.0.0 when actually hosting
+BASE = Bottle()
 host = 'localhost'
 
 # Test port, change to the appropriate port to host
@@ -43,8 +44,29 @@ def run_server():
     '''
         run_server
         Runs a bottle server
+
+        Sample code for https functionality !!!
+
+        run(
+        app=BASE,
+        host=host, 
+        port=port, 
+        debug=debug,
+        reloader = 1,
+        server = 'gunicorn',
+        keyfile = 'certs/myGP.key',
+        certfile = 'certs/myGP.pem'
+        )
     '''
     run(host=host, port=port, debug=debug)
+
+'''
+Part of the https functionality used above 
+
+@BASE.route('/', ['GET'])
+def index():
+    return 'Index'
+'''
 
 #-----------------------------------------------------------------------------
 # Optional SQL support
