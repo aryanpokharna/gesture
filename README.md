@@ -27,10 +27,7 @@ The brains of the operation, here we perform whatever actual code we need, befor
 
 
 ## HTTPS ##
-The library bottle used in the template does not support ssl. To enable bottle server in the template support https/ssl in python, one python library of WSGI that Bottle supports is needed. There are many choices, such as Gunicorn, CherryPy, etc. If you are still unclear, just google sth like how to enable Bottle server support HTTPS python. It is definitely fine if you use some libraries other than Bottle.
-
-
-
+The library bottle used in the template does not support ssl. To enable bottle server in the template support https/ssl in python, one python library of WSGI that Bottle supports is needed. There are many choices, such as Gunicorn, CherryPy, etc. If you are still unclear, just google something like how to enable Bottle server support HTTPS python. It is definitely fine if you use some libraries other than Bottle.
 
 
 ## Views ##
@@ -173,7 +170,6 @@ return view("about", garble="My String!")
 
 Then reload the site and have a look at the "about" page. Have a look at the "{garble}" section of the "about.html" file in the templates directory.
 
-I
 
 ## SQL ##
 Not strictly a requirement, if you want to use SQLite3 then some sample code has been provided in the SQL file. This code is not necessarily in a fully working state, and you will probably want to modify it extensively.
