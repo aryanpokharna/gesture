@@ -161,3 +161,14 @@ def handle_errors(error):
     error_type = error.status_line
     error_msg = error.body
     return page_view("error", error_type=error_type, error_msg=error_msg)
+
+#-----------------------------------------------------------------------------
+# Message
+#-----------------------------------------------------------------------------
+
+def message():
+    '''
+        message
+        Returns the view for the message page
+    '''
+    return page_view("message")

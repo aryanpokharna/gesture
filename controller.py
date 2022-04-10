@@ -137,7 +137,16 @@ def post_register():
     # Call the appropriate method
     return model.register_check(username, password)
 
+#-----------------------------------------------------------------------------
 
+@get('/message')
+def get_message():
+    '''
+        get_message
+        
+        Serves the message page
+    '''
+    return model.message()
 
 #-----------------------------------------------------------------------------
 

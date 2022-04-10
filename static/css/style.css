@@ -1,57 +1,10 @@
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-li a:hover {
-    background-color: #111;
-}
-
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-img {
-    padding: 0;
-    display: block;
-    margin: 0 auto;
-    max-height: 5%;
-    max-width: 5%;
-}
-
-html, body {
-    position:fixed;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-}
-
-main{
+/* *{
     margin:0;
     padding:0;
     font-family: sans-serif;
     box-sizing: border-box;
 }
-
-.message_body{
+body{
     height: 100vh;
     background-color: #f8f8f8;
     display:flex;
@@ -59,27 +12,26 @@ main{
     align-items: center;
 }
 
-.message_container{
+.container{
     width: 450px;
     height: 80vh;
     display: flex;
     flex-direction: column;
     box-shadow: 2px 2px 20px rgba(0,0,0,0.4);
     background-color: dodgerblue;
-    border-radius: 30px;
 }
 
-.message_header h1{
+.header h1{
     color:white;
     padding: 15px;
 }
-.message_body {
+.body {
     flex: 1;
     color: white;
     background-color: rgba(0,0,0,0.7);
     padding: 20px 30px;
 }
-.friend_message{
+.message{
     background-color: dodgerblue;
     padding: 10px;
     color: white;
@@ -94,10 +46,9 @@ main{
     color: black;
 }
 
-.message_footer form{
+.footer form{
     display: flex;
 }
-
 form input{
     flex: 1;
     height: 40px;
@@ -106,7 +57,6 @@ form input{
     padding-left: 5px;
     font-size: 16px;
 }
-
 form button {
     width: 100px;
     font-size: 18px;
@@ -120,4 +70,4 @@ form button {
 form button:hover{
     background-color: blue;
     transform: 0.2s ease;
-}
+} */
