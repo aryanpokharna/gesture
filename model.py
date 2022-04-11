@@ -83,36 +83,24 @@ def register_form():
 #-----------------------------------------------------------------------------
 
 # Check the register credentials and add them to the txt file if valid
-def register_check(username, password):
+def register_store(username, hashed_string, salt):
     '''
-        register_check
-        Checks usernames and passwords are valid entries 
+        register_store
+        Store usernames, hashed passwords and salt, which are valid entries 
 
         :: username :: The username
-        :: password :: The password
+        :: hashed_string :: The hashed password
+        :: salt :: The Salt
 
         Returns either a view for valid credentials, or a view for invalid credentials
     '''
 
-    # By default assume good creds
-    register = True
-    
+    # Adding to .txt file
+    user_info = open("userDetails.txt", "a")
+    user_info.write(username + "," + hashed_string + "," + salt + "\n")
+    user_info.close()
 
-    if len(username) > 0 and len(password) > 0:
-        # add to the txt file
-        register = True
-        user_info = open("userDetails.txt", "a")
-        # this needs to be adjusted with hash and salt information + public key
-        user_info.write(username + "," + password +"\n")
-        user_info.close()
-    elif len(username) == 0 or len(password) == 0:
-        register = False
-        err_str = "Incorrect Details"
-
-    if register: 
-        return page_view("valid", name=username)
-    else:
-        return page_view("invalid", reason=err_str)
+    return page_view("login")
 #-----------------------------------------------------------------------------
 # About
 #-----------------------------------------------------------------------------
