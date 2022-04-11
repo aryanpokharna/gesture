@@ -47,7 +47,9 @@ def run_server():
 
         Sample code for https functionality !!!
 
-        run(
+        
+    '''
+    run(
         app=BASE,
         host=host, 
         port=port, 
@@ -57,16 +59,14 @@ def run_server():
         keyfile = 'certs/myGP.key',
         certfile = 'certs/myGP.pem'
         )
-    '''
-    run(host=host, port=port, debug=debug)
+    #run(host=host, port=port, debug=debug)
 
 '''
 Part of the https functionality used above 
-
+'''
 @BASE.route('/', ['GET'])
 def index():
     return 'Index'
-'''
 
 #-----------------------------------------------------------------------------
 # Optional SQL support
