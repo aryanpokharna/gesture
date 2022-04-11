@@ -101,9 +101,16 @@ def post_login():
     # Handle the form processing
     username = request.forms.get('username')
     password = request.forms.get('password')
-    
-    # Call the appropriate method
-    return model.login_check(username, password)
+
+    if ((len(username) <= 0) or (len(password) <= 0)):
+        pass # error: incorrect details
+    else:
+        # Call the appropriate method
+        salt = 'QxLUF1bgIAdeQX'
+        salted_string = password+salt
+        hashed_pwd = hashlib.sha256(salted_string.encode('utf-8')).hexdigest()
+        return model.login_check(username, hashed_pwd)
+    return model.handle_errors("incorrect details")
 
 
 
@@ -141,10 +148,10 @@ def post_register():
         pass # error: incorrect details
     else:
         salted_string = password+salt
-        hashed_string = hashlib.sha256(salted_string.encode('utf-8')).hexdigest()
+        hashed_pwd = hashlib.sha256(salted_string.encode('utf-8')).hexdigest()
 
         # Call the appropriate method
-        return model.register_store(username, hashed_string, salt)
+        return model.register_store(username, hashed_pwd, salt)
 
     return model.handle_errors("incorrect details")
 
