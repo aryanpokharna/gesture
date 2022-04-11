@@ -46,7 +46,13 @@ def run_server():
         Runs a bottle server
 
         Sample code for https functionality !!!
+<<<<<<< HEAD
     '''
+=======
+
+        
+    
+>>>>>>> 6caab9d16b10991f1c4a2499077ce5ff4613bf54
     run(
         app=BASE,
         host=host, 
@@ -57,9 +63,14 @@ def run_server():
         keyfile = 'gpCA.key',
         certfile = 'gpCA.pem'
         )
+<<<<<<< HEAD
     
     
     #run(host=host, port=port, debug=debug)
+=======
+    '''
+    run(host=host, port=port, debug=debug)
+>>>>>>> 6caab9d16b10991f1c4a2499077ce5ff4613bf54
 
 '''
 Part of the https functionality used above 
