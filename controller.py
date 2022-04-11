@@ -120,7 +120,7 @@ def get_register_controller():
 
 #-----------------------------------------------------------------------------
 
-# Attempt the login
+# Attempt the register
 @post('/register')
 def post_register():
     '''
@@ -133,6 +133,7 @@ def post_register():
     # Handle the form processing
     username = request.forms.get('username')
     password = request.forms.get('password')
+    # password needs to be hashed and salted from front-end js file 
     
     # Call the appropriate method
     return model.register_check(username, password)

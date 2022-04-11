@@ -35,7 +35,7 @@ BASE = Bottle()
 host = 'localhost'
 
 # Test port, change to the appropriate port to host
-port = 8081
+port = 8080
 
 # Turn this off for production
 debug = True
@@ -46,8 +46,6 @@ def run_server():
         Runs a bottle server
 
         Sample code for https functionality !!!
-
-        
     '''
     run(
         app=BASE,
@@ -56,17 +54,16 @@ def run_server():
         debug=debug,
         reloader = 1,
         server = 'gunicorn',
-        keyfile = 'certs/myGP.key',
-        certfile = 'certs/myGP.pem'
+        keyfile = 'gpCA.key',
+        certfile = 'gpCA.pem'
         )
+    
+    
     #run(host=host, port=port, debug=debug)
 
 '''
 Part of the https functionality used above 
 '''
-@BASE.route('/', ['GET'])
-def index():
-    return 'Index'
 
 #-----------------------------------------------------------------------------
 # Optional SQL support
