@@ -5,9 +5,10 @@
     It should exist as a separate layer to any database or data structure that you might be using
     Nothing here should be stateful, if it's stateful let the database handle it
 '''
+from sys import breakpointhook
 from pandas import read_hdf
 import view
-import random
+import random # For Salt Generation
 import sql
 
 db = sql.SQLDatabase("test.db")
@@ -41,33 +42,35 @@ def login_form():
 #-----------------------------------------------------------------------------
 
 # Check the login credentials
-def login_check(username, password):
+def login_check(username, hashed_pwd):
     '''
         login_check
         Checks usernames and passwords
 
         :: username :: The username
-        :: password :: The password
+        :: hashed_pwd :: Hashed+Salted Password
 
         Returns either a view for valid credentials, or a view for invalid credentials
     '''
 
-    # By default assume good creds
-    login = True
-    
-    #this needs to be chnaged to reflect whether the txtfile info matches
-    if username != "admin": # Wrong Username
-        err_str = "Incorrect Username"
-        login = False
-    
-    if password != "password": # Wrong password
-        err_str = "Incorrect Password"
-        login = False
-        
-    if login: 
-        return page_view("valid", name=username)
-    else:
-        return page_view("invalid", reason=err_str)
+    err_str = "temporary error"
+
+    with open('userDetails.txt') as f:
+
+        username_database = f.readlines()
+        for line in username_database:
+            # line.strip()
+            array = line.split(",")
+
+            if array[0] == username: # Match
+                if array[1] == hashed_pwd: # Correct Password
+                    return page_view("valid", name=username)
+                else:
+                    err_str = "Incorrect Password"
+            else:
+                err_str = "Incorrect Username"
+
+    return page_view("invalid", reason=err_str)
 
 #-----------------------------------------------------------------------------
 # Register
@@ -101,6 +104,14 @@ def register_store(username, hashed_string, salt):
     user_info.close()
 
     return page_view("login")
+
+#-----------------------------------------------------------------------------
+# Salt Generator
+#-----------------------------------------------------------------------------
+
+# ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+# ''.join(random.choice(ALPHABET) for i in range(16))
+
 #-----------------------------------------------------------------------------
 # About
 #-----------------------------------------------------------------------------
@@ -127,7 +138,6 @@ def about_garble():
     "ensure the end of the day advancement, a new normal that has evolved from epistemic management approaches and is on the runway towards a streamlined cloud solution.",
     "provide user generated content in real-time will have multiple touchpoints for offshoring."]
     return garble[random.randint(0, len(garble) - 1)]
-
 
 #-----------------------------------------------------------------------------
 # Debug
