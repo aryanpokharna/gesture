@@ -35,7 +35,7 @@ BASE = Bottle()
 host = 'localhost'
 
 # Test port, change to the appropriate port to host
-port = 8080
+port = 8081
 
 # Turn this off for production
 debug = True
@@ -46,31 +46,20 @@ def run_server():
         Runs a bottle server
 
         Sample code for https functionality !!!
-<<<<<<< HEAD
     '''
-=======
-
-        
-    
->>>>>>> 6caab9d16b10991f1c4a2499077ce5ff4613bf54
     run(
-        app=BASE,
+        #app=BASE,
         host=host, 
         port=port, 
         debug=debug,
         reloader = 1,
         server = 'gunicorn',
-        keyfile = 'gpCA.key',
-        certfile = 'gpCA.pem'
+        keyfile = 'localhost.test.key',
+        certfile = 'localhost.test.crt'
         )
-<<<<<<< HEAD
     
     
     #run(host=host, port=port, debug=debug)
-=======
-    '''
-    run(host=host, port=port, debug=debug)
->>>>>>> 6caab9d16b10991f1c4a2499077ce5ff4613bf54
 
 '''
 Part of the https functionality used above 

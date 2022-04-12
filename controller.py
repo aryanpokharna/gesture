@@ -142,12 +142,6 @@ def post_register():
     salt = 'QxLUF1bgIAdeQX'
     username = request.forms.get('username')
     password = request.forms.get('password')
-<<<<<<< HEAD
-    # password needs to be hashed and salted from front-end js file 
-    
-    # Call the appropriate method
-    return model.register_check(username, password)
-=======
 
     # Front-End Username & Password Requirement Checking
     if (len(username) <= 0) and (len(password) <= 0):
@@ -160,7 +154,6 @@ def post_register():
         return model.register_store(username, hashed_pwd, salt)
 
     return model.handle_errors("incorrect details")
->>>>>>> 6caab9d16b10991f1c4a2499077ce5ff4613bf54
 
 #-----------------------------------------------------------------------------
 
