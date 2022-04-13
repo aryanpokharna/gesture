@@ -64,7 +64,7 @@ def login_check(username, hashed_pwd):
 
             if array[0] == username: # Match
                 if array[1] == hashed_pwd: # Correct Password
-                    return page_view("valid", name=username)
+                    return page_view("message", name=username)
                 else:
                     err_str = "Incorrect Password"
             else:
