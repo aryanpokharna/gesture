@@ -26,6 +26,14 @@
 const pki = require('node-forge').pki;
 var keys = pki.rsa.generateKeyPair(2048);
 //needs to be heavily edited still but somewhat works 
-console.log(keys.publicKey);
-var pub = pki.publicKeyToPem(keys.publicKey, 72)
-console.log(pub)
+var pub = pki.publicKeyToPem(keys.publicKey)
+var priv = pki.publicKeyToPem(keys.privateKey)
+
+localStorage.setItem('pk', pub)
+localStorage.setItem('sk', priv)
+console.log(localStorage.getItem('sk'))
+
+// function sendUserPk() {
+//      let userPk = localStorage.getItem('pk')
+
+// }

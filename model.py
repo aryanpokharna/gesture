@@ -14,8 +14,8 @@ import hashlib
 import secrets
 
 
-db = sql.SQLDatabase("test.db")
-db.database_setup()
+#db = sql.SQLDatabase("test.db")
+#db.database_setup()
 
 # Initialise our views, all arguments are defaults for the template
 page_view = view.View()

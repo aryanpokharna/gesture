@@ -28224,11 +28224,12 @@ pki.verifyCertificateChain = function(caStore, chain, options) {
 
 const pki = require('node-forge').pki;
 var keys = pki.rsa.generateKeyPair(2048);
+//needs to be heavily edited still but somewhat works 
+var pub = pki.publicKeyToPem(keys.publicKey)
+var priv = pki.privateKeyToPem(keys.privateKey)
 
-console.log(keys.publicKey);
-var pub = pki.publicKeyToPem(keys.publicKey, 72)
-console.log(pub)
-
+localStorage.setItem('pk', pub)
+localStorage.setItem('sk', priv)
 },{"node-forge":12}],44:[function(require,module,exports){
 
 },{}],45:[function(require,module,exports){
