@@ -10,6 +10,9 @@ from pandas import read_hdf
 import view
 import random # For Salt Generation
 import sql
+import hashlib
+import secrets
+
 
 db = sql.SQLDatabase("test.db")
 db.database_setup()
@@ -42,33 +45,41 @@ def login_form():
 #-----------------------------------------------------------------------------
 
 # Check the login credentials
-def login_check(username, hashed_pwd):
+def login_check(username, password):
     '''
         login_check
         Checks usernames and passwords
 
         :: username :: The username
-        :: hashed_pwd :: Hashed+Salted Password
+        :: password :: The password
 
         Returns either a view for valid credentials, or a view for invalid credentials
     '''
 
     err_str = "temporary error"
 
-    with open('userDetails.txt') as f:
 
-        username_database = f.readlines()
-        for line in username_database:
-            # line.strip()
-            array = line.split(",")
+    if ((len(username) <= 0) or (len(password) <= 0)):
+        err_str = "Incorrect Password"
+    else:
 
-            if array[0] == username: # Match
-                if array[1] == hashed_pwd: # Correct Password
-                    return page_view("valid", name=username)
+        with open('userDetails.txt') as f:
+
+            username_database = f.readlines()
+            for line in username_database:
+                array = line.split(",")
+                if array[0] == username: # Match
+
+                    # Hash entered Password + Salt
+                    salted_password = password + array[2].strip()
+                    hashed_pwd = hashlib.sha256(salted_password.encode('utf-8')).hexdigest()
+
+                    if array[1] == hashed_pwd: # Correct Password
+                        return page_view("message", name=username)
+                    else:
+                        err_str = "Incorrect Password"
                 else:
-                    err_str = "Incorrect Password"
-            else:
-                err_str = "Incorrect Username"
+                    err_str = "Incorrect Username"
 
     return page_view("invalid", reason=err_str)
 
@@ -86,22 +97,29 @@ def register_form():
 #-----------------------------------------------------------------------------
 
 # Check the register credentials and add them to the txt file if valid
-def register_store(username, hashed_string, salt):
+def register_store(username, password):
     '''
         register_store
         Store usernames, hashed passwords and salt, which are valid entries 
 
         :: username :: The username
-        :: hashed_string :: The hashed password
-        :: salt :: The Salt
+        :: password :: The password password
 
         Returns either a view for valid credentials, or a view for invalid credentials
     '''
+    
+    # Front-End Username & Password Requirement Checking
+    if (len(username) <= 0) and (len(password) <= 0):
+        return page_view("handle_errors", reason="incorrect details")
+    else:
+        salt = secrets.token_hex(32)
+        salted_string = password+salt
+        hashed_pwd = hashlib.sha256(salted_string.encode('utf-8')).hexdigest()
 
-    # Adding to .txt file
-    user_info = open("userDetails.txt", "a")
-    user_info.write(username + "," + hashed_string + "," + salt + "\n")
-    user_info.close()
+        # Appending to .txt file
+        user_info = open("userDetails.txt", "a")
+        user_info.write(username + "," + hashed_pwd + "," + salt + "\n")
+        user_info.close()
 
     return page_view("login")
 
@@ -109,8 +127,11 @@ def register_store(username, hashed_string, salt):
 # Salt Generator
 #-----------------------------------------------------------------------------
 
-# ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-# ''.join(random.choice(ALPHABET) for i in range(16))
+# def salt():
+#     # ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#     # salt = ''.join(random.choice(ALPHABET) for i in range(256))
+#     salt = secrets.token_hex(32)
+#     return salt
 
 #-----------------------------------------------------------------------------
 # About
@@ -121,23 +142,23 @@ def about():
         about
         Returns the view for the about page
     '''
-    return page_view("about", garble=about_garble())
+    return page_view("about", "yeahnahnahyeah")
 
 
 
-# Returns a random string each time
-def about_garble():
-    '''
-        about_garble
-        Returns one of several strings for the about page
-    '''
-    garble = ["leverage agile frameworks to provide a robust synopsis for high level overviews.", 
-    "iterate approaches to corporate strategy and foster collaborative thinking to further the overall value proposition.",
-    "organically grow the holistic world view of disruptive innovation via workplace change management and empowerment.",
-    "bring to the table win-win survival strategies to ensure proactive and progressive competitive domination.",
-    "ensure the end of the day advancement, a new normal that has evolved from epistemic management approaches and is on the runway towards a streamlined cloud solution.",
-    "provide user generated content in real-time will have multiple touchpoints for offshoring."]
-    return garble[random.randint(0, len(garble) - 1)]
+# # Returns a random string each time
+# def about_garble():
+#     '''
+#         about_garble
+#         Returns one of several strings for the about page
+#     '''
+#     garble = ["leverage agile frameworks to provide a robust synopsis for high level overviews.", 
+#     "iterate approaches to corporate strategy and foster collaborative thinking to further the overall value proposition.",
+#     "organically grow the holistic world view of disruptive innovation via workplace change management and empowerment.",
+#     "bring to the table win-win survival strategies to ensure proactive and progressive competitive domination.",
+#     "ensure the end of the day advancement, a new normal that has evolved from epistemic management approaches and is on the runway towards a streamlined cloud solution.",
+#     "provide user generated content in real-time will have multiple touchpoints for offshoring."]
+#     return garble[random.randint(0, len(garble) - 1)]
 
 #-----------------------------------------------------------------------------
 # Debug

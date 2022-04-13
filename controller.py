@@ -7,7 +7,6 @@
 from bottle import route, get, post, error, request, static_file
 
 import model
-import hashlib
 
 #-----------------------------------------------------------------------------
 # Static file paths
@@ -101,16 +100,9 @@ def post_login():
     # Handle the form processing
     username = request.forms.get('username')
     password = request.forms.get('password')
+    return model.login_check(username, password)
 
-    if ((len(username) <= 0) or (len(password) <= 0)):
-        pass # error: incorrect details
-    else:
-        # Call the appropriate method
-        salt = 'QxLUF1bgIAdeQX'
-        salted_string = password+salt
-        hashed_pwd = hashlib.sha256(salted_string.encode('utf-8')).hexdigest()
-        return model.login_check(username, hashed_pwd)
-    return model.handle_errors("incorrect details")
+    # return model.handle_errors("incorrect details")
 
 
 
@@ -139,21 +131,11 @@ def post_register():
     '''
 
     # Handle the form processing
-    salt = 'QxLUF1bgIAdeQX'
     username = request.forms.get('username')
     password = request.forms.get('password')
+    
+    return model.register_store(username, password)
 
-    # Front-End Username & Password Requirement Checking
-    if (len(username) <= 0) and (len(password) <= 0):
-        pass # error: incorrect details
-    else:
-        salted_string = password+salt
-        hashed_pwd = hashlib.sha256(salted_string.encode('utf-8')).hexdigest()
-
-        # Call the appropriate method
-        return model.register_store(username, hashed_pwd, salt)
-
-    return model.handle_errors("incorrect details")
 
 #-----------------------------------------------------------------------------
 

@@ -1,0 +1,8 @@
+[
+    {
+        "name": "AP",
+        "hashed_pwd": "asjdksd",
+        "salt":"safdsfD",
+        "friends":  ["dg"]
+    }
+]   
