@@ -1,19 +1,19 @@
-main{
+*{
     margin:0;
     padding:0;
     font-family: sans-serif;
     box-sizing: border-box;
 }
 
-.message_body{
-    height: 50vh;
+body{
+    height: 100vh;
     background-color: #f8f8f8;
     display:flex;
     justify-content: center;
     align-items: center;
 }
 
-.message_container{
+.container{
     width: 450px;
     height: 80vh;
     display: flex;
@@ -23,17 +23,19 @@ main{
     border-radius: 30px;
 }
 
-.message_header h1{
+.header h1{
     color:white;
     padding: 15px;
 }
-.message_body {
+
+.body {
     flex: 1;
     color: white;
     background-color: rgba(0,0,0,0.7);
     padding: 20px 30px;
 }
-.friend_message{
+
+.message{
     background-color: dodgerblue;
     padding: 10px;
     color: white;
@@ -47,8 +49,7 @@ main{
     background-color: white;
     color: black;
 }
-
-.message_footer form{
+.footer form{
     display: flex;
 }
 
