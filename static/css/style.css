@@ -6,7 +6,7 @@ main{
 }
 
 .message_body{
-    height: 100vh;
+    height: 50vh;
     background-color: #f8f8f8;
     display:flex;
     justify-content: center;

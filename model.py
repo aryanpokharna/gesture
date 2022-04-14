@@ -142,7 +142,7 @@ def about():
         about
         Returns the view for the about page
     '''
-    return page_view("about", "yeahnahnahyeah")
+    return page_view("about")
 
 
 

@@ -4,7 +4,7 @@
 
 <head>
     <title>Chat</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body class="message">
@@ -16,19 +16,21 @@
     <div class="message_body">
         <!-- <p class="message">Hello</p>
         <p class="message user_message">Hi</p> -->
-        <script type="text/javascript">
+        <p id="outputBx"></p>
+        <script src = "js/load.js"></script>
+        <!-- <script type="text/javascript">
             fetch("userFriends.json")
                 .then(response => response.json())
                 .then(data => {
                     console.log(data.sentence)
                     document.querySelector("#debug").innerText = data.sentence
                 })
-        </script>
+        </script> -->
     </div>
 
     <div class="message footer">
         <form>
-            <input type="text" name="">
+            <input type="text" name="Enter your message" id="input">
             <button>SEND</button>
         </form>
     </div>

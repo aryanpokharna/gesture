@@ -16,6 +16,7 @@
 import os
 import sys
 from bottle import run, Bottle
+import bottle
 
 #-----------------------------------------------------------------------------
 # You may eventually wish to put these in their own directories and then load 
@@ -31,7 +32,7 @@ import controller
 
 # It might be a good idea to move the following settings to a config file and then load them
 # Change this to your IP address or 0.0.0.0 when actually hosting
-BASE = Bottle()
+app = bottle.default_app()
 host = 'localhost'
 
 # Test port, change to the appropriate port to host
