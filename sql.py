@@ -13,7 +13,7 @@ class SQLDatabase():
     '''
 
     # Get the database running
-    def __init__(self, database_arg=":memory:"):
+    def __init__(self, database_arg="database.db"):
         self.conn = sqlite3.connect(database_arg)
         self.cur = self.conn.cursor()
 

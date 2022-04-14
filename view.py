@@ -40,9 +40,15 @@ class View():
             :: tailer :: Tailer template to use
             :: kwargs :: Keyword arguments to pass
         '''
-        body_template = self.load_template(filename)
-        header_template = self.load_template(header)
-        tailer_template = self.load_template(tailer)
+        
+        if filename == "message":
+            body_template = self.load_template(filename)
+            header_template = self.load_template("header_message")
+            tailer_template = self.load_template(tailer)
+        else:
+            body_template = self.load_template(filename)
+            header_template = self.load_template(header)
+            tailer_template = self.load_template(tailer)
 
         rendered_template = self.render(
             body_template=body_template, 

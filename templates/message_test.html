@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<main class="message_main">
+
+<head>
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body class="message">
+<div class="container">
+    <div class="header">
+        <h1>WebChat</h1>
+    </div>
+
+    <div class="message_body">
+        <!-- <p class="message">Hello</p>
+        <p class="message user_message">Hi</p> -->
+        <script type="text/javascript">
+            fetch("userFriends.json")
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.sentence)
+                    document.querySelector("#debug").innerText = data.sentence
+                })
+        </script>
+    </div>
+
+    <div class="message footer">
+        <form>
+            <input type="text" name="">
+            <button>SEND</button>
+        </form>
+    </div>
+</div>
+</body>
+
+</main>
+</html>
