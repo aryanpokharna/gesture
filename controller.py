@@ -4,7 +4,12 @@
     maybe some simple program logic
 '''
 
-from bottle import route, get, post, error, request, static_file
+from turtle import pos
+from unicodedata import name
+from bottle import route, get, post, error, request, static_file, BaseRequest
+import json
+
+from flask import jsonify
 
 import model
 
@@ -57,6 +62,13 @@ def serve_js(js):
         Returns a static file object containing the requested javascript
     '''
     return static_file(js, root='static/js/')
+
+
+# @post('/register/key')
+# def getKey():
+    # TRYNNA FIGURE OUT WHAT TO DO HERE 
+#     #newUser = {'name': request.json.get('name'), }
+#     #append to new json array 
 
 #-----------------------------------------------------------------------------
 # Pages

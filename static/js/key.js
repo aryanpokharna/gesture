@@ -5,6 +5,8 @@
 //const nacl = require('tweetnacl');
 //nacl.util = require('tweetnacl-util');
 
+const { rejects } = require('assert');
+
 //const user = nacl.box.keyPair();
 // The `generateKeyPairSync` method accepts two arguments:
 // 1. The type of keys we want, which in this case is "rsa"
@@ -27,11 +29,35 @@ const pki = require('node-forge').pki;
 var keys = pki.rsa.generateKeyPair(2048);
 //needs to be heavily edited still but somewhat works 
 var pub = pki.publicKeyToPem(keys.publicKey)
-var priv = pki.publicKeyToPem(keys.privateKey)
+var priv = pki.privateKeyToPem(keys.privateKey)
+
+const data = { pubKey : pub}
 
 localStorage.setItem('pk', pub)
 localStorage.setItem('sk', priv)
 console.log(localStorage.getItem('sk'))
+fetch("https://127.0.0.1:8081/register/key", {
+     method: 'POST',
+     headers: {
+          'Content-type': 'application/json',
+          'Accept' : 'application/json'
+     },
+     body: JSON.stringify(data),
+}).then(response => response.json()).then(data => {console.log('success:', data)
+})
+.catch((error) => {console.error('Error', error);
+});
+
+
+// }).then(res=>{
+//           if (res.ok){
+//                return res.json()
+//           } else {
+//                alert("something wrong")
+//           }}).then(jsonResponse=>{
+//                console.log(jsonResponse)
+//           }
+//           ).catch((err) => console.error(err));
 
 // function sendUserPk() {
 //      let userPk = localStorage.getItem('pk')
