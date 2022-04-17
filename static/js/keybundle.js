@@ -28223,26 +28223,37 @@ const { rejects } = require('assert');
 //       true,
 //       ["deriveKey", "deriveBits"]
 //     );
+let bttn = document.getElementById("regBtn")
 
 const pki = require('node-forge').pki;
-var keys = pki.rsa.generateKeyPair(2048);
-//needs to be heavily edited still but somewhat works 
-var pub = pki.publicKeyToPem(keys.publicKey)
-var priv = pki.privateKeyToPem(keys.privateKey)
 
-const data = { pubKey : pub}
+bttn.addEventListener("click", function() {
+  let user = document.getElementById("user").value;
+  let pwd = document.getElementById("pwd").value;
+  var keys = pki.rsa.generateKeyPair(2048);
+  var pub = pki.publicKeyToPem(keys.publicKey)
+  var priv = pki.privateKeyToPem(keys.privateKey)
 
-localStorage.setItem('pk', pub)
-localStorage.setItem('sk', priv)
-console.log(localStorage.getItem('sk'))
-fetch("https://127.0.0.1:8081/register/key", {
-     method: 'POST',
-     headers: {
-          'Content-type': 'application/json',
-          'Accept' : 'application/json'
-     },
-     body: JSON.stringify(data),
+  const data = { pubKey : pub, username: user, password: pwd}
+
+  localStorage.setItem('pk', pub)
+  localStorage.setItem('sk', priv)
+
+  fetch("/endpoint", {
+      method: 'POST',
+      headers: {
+            'Content-type': 'application/json',
+            'Accept' : 'application/json'
+      },
+      body: JSON.stringify(data),
+  }).then(response => response.json()).then(data => {console.log('success:', data)
+  })
+  .catch((error) => {console.error('Error', error);
+  });
+
 });
+
+
 
 
 // }).then(res=>{

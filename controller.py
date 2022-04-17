@@ -64,11 +64,26 @@ def serve_js(js):
     return static_file(js, root='static/js/')
 
 
-# @post('/register/key')
-# def getKey():
-    # TRYNNA FIGURE OUT WHAT TO DO HERE 
-#     #newUser = {'name': request.json.get('name'), }
-#     #append to new json array 
+@post('/endpoint')
+def myEndpoint():
+    #TRYNNA FIGURE OUT WHAT TO DO HERE 
+    #newUser = {'name': request.json.get('name'), }
+    #append to new json array 
+    pubKey = request.json.get('pubKey')
+    username = request.json.get('username')
+    password = request.json.get('password')
+    model.register_key_store(username, pubKey)
+    return 
+
+@post('/encryptMessage')
+def encryptEndpoint():
+    msg = request.json.get('message')
+    model.store_encrypted_msg(msg)
+
+@get('/decryptMessage')
+def decryptEndpoint():
+    encryptedMsg = model.return_encrypted_msg()
+    return encryptedMsg
 
 #-----------------------------------------------------------------------------
 # Pages

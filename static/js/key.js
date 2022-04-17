@@ -35,8 +35,7 @@ const data = { pubKey : pub}
 
 localStorage.setItem('pk', pub)
 localStorage.setItem('sk', priv)
-console.log(localStorage.getItem('sk'))
-fetch("https://127.0.0.1:8081/register/key", {
+fetch("/endpoint", {
      method: 'POST',
      headers: {
           'Content-type': 'application/json',

@@ -118,10 +118,21 @@ def register_store(username, password):
 
         # Appending to .txt file
         user_info = open("userDetails.txt", "a")
-        user_info.write(username + "," + hashed_pwd + "," + salt + "\n")
+        user_info.write(username + "," + hashed_pwd + "," + salt + "," + pubKey +"\n")
         user_info.close()
 
     return page_view("login")
+
+def register_key_store(username, publicKey):
+    # idea - this seperately iterates over the file and adds the pubkey to the end of the user
+    return 
+
+def store_encrypted_msg(message):
+    msgFile = open("messageChain.txt", "a")
+
+def return_encrypted_msg():
+    # get the last appended message from the file 
+    return 
 
 #-----------------------------------------------------------------------------
 # Salt Generator
