@@ -7,6 +7,7 @@
 '''
 from sys import breakpointhook
 from pandas import read_hdf
+from rsa import PublicKey
 import view
 import random # For Salt Generation
 import sql
@@ -128,8 +129,27 @@ def register_store(username, password):
     return page_view("login")
 
 def register_key_store(username, publicKey):
-    # idea - this seperately iterates over the file and adds the pubkey to the end of the user
+    # idea - this seperately writes the username and public key to a new file
+    # since no 2 user can have the same username, it is unique and will respond the necessary key
+    user_keys = open("userKeys.txt", "a")
+    user_keys.write(username + "," + publicKey)
+    user_keys.close()
     return 
+
+def get_user_key(username):
+    user_keys = open("userKeys.txt", "r")
+    totalFile = user_keys.readlines()
+    user_keys.close()
+    i = 0
+    while i < len(totalFile):
+        values = totalFile[i].split(",")
+        if values[0] == username:
+            pk = totalFile[i+1].rstrip() + totalFile[i+2].rstrip() + totalFile[i+3].rstrip() + totalFile[i+4].rstrip() + totalFile[i+5].rstrip() + totalFile[i+6].rstrip() + totalFile[i+7].rstrip()
+            break
+    i+=10
+    return { "PublicKey" : pk}
+
+
 
 def store_encrypted_msg(message):
     msgFile = open("messageChain.txt", "a")

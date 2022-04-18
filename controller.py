@@ -66,19 +66,23 @@ def serve_js(js):
 
 @post('/endpoint')
 def myEndpoint():
-    #TRYNNA FIGURE OUT WHAT TO DO HERE 
-    #newUser = {'name': request.json.get('name'), }
-    #append to new json array 
     pubKey = request.json.get('pubKey')
     username = request.json.get('username')
     password = request.json.get('password')
-    model.register_key_store(username, pubKey)
-    return 
+    return model.register_key_store(username, pubKey)
+
+@get('/userKey/<username>')
+def returnUserKey(username):
+    return model.get_user_key(username)
+
 
 @post('/encryptMessage')
 def encryptEndpoint():
     msg = request.json.get('message')
+    iv = request.json.get('iv')
+    sessionKey = request.json.get('sessionKey')
     model.store_encrypted_msg(msg)
+    return
 
 @get('/decryptMessage')
 def decryptEndpoint():
@@ -127,6 +131,7 @@ def post_login():
     # Handle the form processing
     username = request.forms.get('username')
     password = request.forms.get('password')
+    
     return model.login_check(username, password)
 
     # return model.handle_errors("incorrect details")

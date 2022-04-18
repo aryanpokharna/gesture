@@ -2,6 +2,16 @@ const forge = require('node-forge')
 
 const bttn = document.querySelector('button');
 
+// First get the user that we are chatting with 
+//const user = document.
+
+//Now fetch the get userKey api to retrieve their pk
+const endpoint = "/userKey/dg"//+user
+const request = fetch(endpoint).then(data=> {
+    return data.json();
+})
+console.log(request)
+
 bttn.addEventListener("click", function() {
         const submitMessage = document.getElementById("chatMsg")
         //dont need salt as its not used for making the key, instead we have the sessionKey
@@ -18,14 +28,14 @@ bttn.addEventListener("click", function() {
 
         const encrypted = cipher.output.bytes()
 
-        const data = {message : encrypted}
+        const data = {message : encrypted, iv: iv, sessionKey: key}
         fetch("/encryptMessage", {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'Accept' : 'application/json'
           },
-          body: JSON.stringif(data),
+          body: JSON.stringify(data),
         }).then(response => response.json()).then(data => {console.log('Success', data)
         }).catch((error) => {console.error('Error', error);
     });
