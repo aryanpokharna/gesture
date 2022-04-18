@@ -69,7 +69,7 @@ def myEndpoint():
     pubKey = request.json.get('pubKey')
     username = request.json.get('username')
     password = request.json.get('password')
-    return model.register_key_store(username, pubKey)
+    return model.register_key_store(username, password, pubKey)
 
 @get('/userKey/<username>')
 def returnUserKey(username):

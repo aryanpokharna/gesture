@@ -126,9 +126,13 @@ def register_store(username, password):
 
     return page_view("login")
 
-def register_key_store(username, publicKey):
+def register_key_store(username, password, publicKey):
     # idea - this seperately writes the username and public key to a new file
     # since no 2 user can have the same username, it is unique and will respond the necessary key
+
+    ## check username and password is not empty ##
+    if ((len(username) <= 0) and (len(password) <= 0)) or usernameExists(username):
+        return    
     user_keys = open("userKeys.txt", "a")
     user_keys.write(username + "," + publicKey)
     user_keys.close()
