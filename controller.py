@@ -4,7 +4,7 @@
     maybe some simple program logic
 '''
 
-from turtle import pos
+# from turtle import pos
 from unicodedata import name
 from bottle import route, get, post, error, request, static_file, BaseRequest
 import json

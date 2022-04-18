@@ -60,7 +60,7 @@ def login_check(username, password):
 
 
     if ((len(username) <= 0) or (len(password) <= 0)):
-        err_str = "Incorrect Password"
+        err_str = "Incorrect Username or Password"
     else:
 
         with open('userDetails.txt') as f:
@@ -68,18 +68,16 @@ def login_check(username, password):
             username_database = f.readlines()
             for line in username_database:
                 array = line.split(",")
-                if array[0] == username: # Match
+                if array[0] == username: # Match in Username
 
-                    # Hash entered Password + Salt
-                    salted_password = password + array[2].strip()
+                    salted_password = password + array[2].strip() # Entered Password + Previously Stored Salt
                     hashed_pwd = hashlib.sha256(salted_password.encode('utf-8')).hexdigest()
 
-                    if array[1] == hashed_pwd: # Correct Password
+                    if array[1] == hashed_pwd: # Password Entered is Correct
                         return page_view("message", name=username)
-                    else:
-                        err_str = "Incorrect Password"
-                else:
-                    err_str = "Incorrect Username"
+                        
+                else: # Password Entered is Incorrect or No Match in Username
+                    err_str = "Incorrect Username or Password"
 
     return page_view("invalid", reason=err_str)
 
@@ -110,7 +108,9 @@ def register_store(username, password):
     
     # Front-End Username & Password Requirement Checking
     if (len(username) <= 0) and (len(password) <= 0):
-        return page_view("handle_errors", reason="incorrect details")
+        return page_view("error", reason="Incorrect Length of Username or Password")
+    elif not usernameExists(username):
+        return page_view(error("Username Already Exists"))
     else:
         salt = secrets.token_hex(32)
         salted_string = password+salt
@@ -118,7 +118,7 @@ def register_store(username, password):
 
         # Appending to .txt file
         user_info = open("userDetails.txt", "a")
-        user_info.write(username + "," + hashed_pwd + "," + salt + "," + pubKey +"\n")
+        user_info.write(username + "," + hashed_pwd + "," + salt + "\n")
         user_info.close()
 
     return page_view("login")
@@ -134,13 +134,21 @@ def return_encrypted_msg():
     # get the last appended message from the file 
     return 
 
+def usernameExists(username):
+    with open('userDetails.txt') as f:
+        username_database = f.readlines()
+        for line in username_database:
+            array = line.split(",")
+            if array[0] == username: # Match in Username 
+                return True
+    return False
+
+
 #-----------------------------------------------------------------------------
 # Salt Generator
 #-----------------------------------------------------------------------------
 
 # def salt():
-#     # ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-#     # salt = ''.join(random.choice(ALPHABET) for i in range(256))
 #     salt = secrets.token_hex(32)
 #     return salt
 
@@ -154,22 +162,6 @@ def about():
         Returns the view for the about page
     '''
     return page_view("about")
-
-
-
-# # Returns a random string each time
-# def about_garble():
-#     '''
-#         about_garble
-#         Returns one of several strings for the about page
-#     '''
-#     garble = ["leverage agile frameworks to provide a robust synopsis for high level overviews.", 
-#     "iterate approaches to corporate strategy and foster collaborative thinking to further the overall value proposition.",
-#     "organically grow the holistic world view of disruptive innovation via workplace change management and empowerment.",
-#     "bring to the table win-win survival strategies to ensure proactive and progressive competitive domination.",
-#     "ensure the end of the day advancement, a new normal that has evolved from epistemic management approaches and is on the runway towards a streamlined cloud solution.",
-#     "provide user generated content in real-time will have multiple touchpoints for offshoring."]
-#     return garble[random.randint(0, len(garble) - 1)]
 
 #-----------------------------------------------------------------------------
 # Debug
