@@ -108,9 +108,13 @@ def register_store(username, password):
     
     # Front-End Username & Password Requirement Checking
     if (len(username) <= 0) and (len(password) <= 0):
-        return page_view("error", reason="Incorrect Length of Username or Password")
-    elif not usernameExists(username):
-        return page_view(error("Username Already Exists"))
+        pass
+        # return handle_errors(reason="Incorrect Length of Username or Password")
+        # return page_view("handle_errors", reason="Incorrect Length of Username or Password")
+    elif usernameExists(username):
+        pass
+        # return handle_errors("Username Already Exists")
+        # return page_view("handle_errors", reason="Username Already Exists")
     else:
         salt = secrets.token_hex(32)
         salted_string = password+salt
