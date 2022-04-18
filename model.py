@@ -131,7 +131,7 @@ def register_key_store(username, password, publicKey):
     # since no 2 user can have the same username, it is unique and will respond the necessary key
 
     ## check username and password is not empty ##
-    if ((len(username) <= 0) and (len(password) <= 0)) or usernameExists(username):
+    if ((len(username) <= 0) and (len(password) <= 0)):        
         return    
     user_keys = open("userKeys.txt", "a")
     user_keys.write(username + "," + publicKey)
@@ -149,9 +149,7 @@ def get_user_key(username):
             pk = totalFile[i+1].rstrip() + totalFile[i+2].rstrip() + totalFile[i+3].rstrip() + totalFile[i+4].rstrip() + totalFile[i+5].rstrip() + totalFile[i+6].rstrip() + totalFile[i+7].rstrip()
             break
     i+=10
-    return { "PublicKey" : pk}
-
-
+    return {"PublicKey" : pk}
 
 def store_encrypted_msg(message):
     msgFile = open("AliceBob.txt", "a")
