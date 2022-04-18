@@ -7,10 +7,8 @@
 '''
 from sys import breakpointhook
 from pandas import read_hdf
-from rsa import PublicKey
+# from rsa import PublicKey
 import view
-import random # For Salt Generation
-import sql
 import hashlib
 import secrets
 
@@ -109,11 +107,11 @@ def register_store(username, password):
     
     # Front-End Username & Password Requirement Checking
     if (len(username) <= 0) and (len(password) <= 0):
-        pass
+        return page_view("invalid", reason="Incorrect Length of Username or Password")
         # return handle_errors(reason="Incorrect Length of Username or Password")
         # return page_view("handle_errors", reason="Incorrect Length of Username or Password")
     elif usernameExists(username):
-        pass
+        return page_view("invalid", reason="Username Already Exists")
         # return handle_errors("Username Already Exists")
         # return page_view("handle_errors", reason="Username Already Exists")
     else:
@@ -152,7 +150,10 @@ def get_user_key(username):
 
 
 def store_encrypted_msg(message):
-    msgFile = open("messageChain.txt", "a")
+    msgFile = open("AliceBob.txt", "a")
+    msgFile.write(message+"\n")
+    msgFile.close()
+
 
 def return_encrypted_msg():
     # get the last appended message from the file 

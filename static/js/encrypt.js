@@ -13,7 +13,7 @@ const request = fetch(endpoint).then(data=> {
 console.log(request)
 
 bttn.addEventListener("click", function() {
-        const submitMessage = document.getElementById("chatMsg")
+        const submitMessage = document.getElementById("input")
         //dont need salt as its not used for making the key, instead we have the sessionKey
         const salt = forge.random.getBytesSync(16)
         const iv = forge.random.getBytesSync(16)
