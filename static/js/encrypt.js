@@ -1,4 +1,4 @@
-const forge = require('node-forge')
+//const forge = require('node-forge')
 
 // bttn.addEventListener("click", function() {
 //         const submitMessage = document.getElementById("input")
@@ -56,24 +56,21 @@ const request = fetch("/decryptMessage").then(data=> {
 // i think we are gonna have to decrypt within this .then section 
 // it doesnt seem that we can extract the key-value pairs into a variable to use later 
 
-
 // const input = document.querySelector('message');
 // const log = document.getElementById('message_input');
 // input.addEventListener('input', store_msg);
 
 // var msgSend = document.querySelector('input');
 // var result = document.getElementsByClassName('result');
-var Mainkey = 
-
-crypto.subtle.generateKey({
+var Mainkey = crypto.subtle.generateKey({
     name : "AES-GCM",
     length : 256,
 },
     true,
     ['encrypt', 'decrypt']
 ).then(function(key){
-    Mainkey = key
     console.log(key);
+    return key
 })
 
 function encryptString(string){
@@ -94,10 +91,11 @@ bttn.addEventListener("click", function() {
   //result.textContent = "Inputted text: " + e.data;
   let msg = document.getElementById("input_message").value;
   //dont need salt as its not used for making the key, instead we have the sessionKey
-  const salt = forge.random.getBytesSync(16)
-  const iv = forge.random.getBytesSync(16)
-  var encrypted = encryptString(msg).then(function(encrypted){
+//   const salt = forge.random.getBytesSync(16)
+//   const iv = forge.random.getBytesSync(16)
+  const encrypted = encryptString(msg).then(function(encrypted){
     console.log(new Uint8Array(encrypted));
+    return new Uint8Array(encrypted)
   });
   //Session storage key fix 
 //   const key = 0101001 //sessionStorage.getItem('sessionKey')
