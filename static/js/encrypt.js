@@ -63,15 +63,38 @@ const request = fetch("/decryptMessage").then(data=> {
 // var msgSend = document.querySelector('input');
 // var result = document.getElementsByClassName('result');
 var Mainkey = crypto.subtle.generateKey({
-    name : "AES-GCM",
-    length : 256,
+    name : "RSA-OAEP",
+    modulusLength : 2048,
+    hash: {name: "SHA-256"},
+    publicExponent: new Uint8Array([1, 0, 1]),
 },
     true,
     ['encrypt', 'decrypt']
 ).then(function(key){
     console.log(key);
-    return key
+    window.crypto.subtle.exportKey(
+        "pkcs8",
+        key.privateKey
+    ).then(function (privateKey){
+        let byteCode = String.fromCharCode.apply(null, new Uint8Array(privateKey))
+        console.log(window.btoa(byteCode))
+        localStorage.setItem("secretKey", byteCode)
+    }).catch(function(err){
+        console.log(err);
+    });
+    window.crypto.subtle.exportKey(
+        "spki",
+        key.publicKey
+    ).then(function (publicKey){
+        let byteCode = String.fromCharCode.apply(null, new Uint8Array(publicKey))
+        console.log(window.btoa(byteCode))
+        localStorage.setItem("publicKey", byteCode)
+    }).catch(function(err){
+        console.error(err)
+    });
 })
+console.log(btoa(localStorage.getItem("publicKey")))
+console.log(btoa(localStorage.getItem("secretKey")))
 
 function encryptString(string){
     var encoder = new TextEncoder();
