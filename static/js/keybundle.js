@@ -28255,8 +28255,6 @@ bttn.addEventListener("click", function() {
 });
 
 
-
-
 // }).then(res=>{
 //           if (res.ok){
 //                return res.json()
