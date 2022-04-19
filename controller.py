@@ -181,6 +181,19 @@ def get_message():
     return model.message()
 
 #-----------------------------------------------------------------------------
+@post('/message')
+def post_message():
+    '''
+        post_message
+        
+        Handles message attempts.
+    '''
+    # Handle the form processing
+    message = request.forms.get('message')
+    return model.store_message(message)
+
+
+#-----------------------------------------------------------------------------
 
 @get('/about')
 def get_about():

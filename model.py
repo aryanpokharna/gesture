@@ -221,3 +221,20 @@ def message():
         Returns the view for the message page
     '''
     return page_view("message")
+
+#-----------------------------------------------------------------------------
+# Message
+#-----------------------------------------------------------------------------
+
+def store_message(message):
+    '''
+        message
+        Returns the view for the message page
+    '''
+    if len(message) == 0:
+        return page_view("invalid", reason="Cannot send message of zero length")
+    else:
+        ABConvo = open("AliceBob.txt", "a")
+        ABConvo.write(message + "\n")
+        ABConvo.close()
+        return page_view("message")

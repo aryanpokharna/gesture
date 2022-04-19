@@ -28223,6 +28223,7 @@ const { rejects } = require('assert');
 //       true,
 //       ["deriveKey", "deriveBits"]
 //     );
+
 let bttn = document.getElementById("regBtn")
 
 const pki = require('node-forge').pki;
@@ -28234,7 +28235,7 @@ bttn.addEventListener("click", function() {
   var pub = pki.publicKeyToPem(keys.publicKey)
   var priv = pki.privateKeyToPem(keys.privateKey)
 
-  const data = { pubKey : pub, username: user, password: pwd}
+  const data = { pubKey : pub, username: user, password: pwd }
 
   localStorage.setItem('pk', pub)
   localStorage.setItem('sk', priv)

@@ -10,7 +10,7 @@
 <div class="container">
     <div class="header">
         <h1>WebChat</h1>
-        <form action="templates/message.html">
+        <form action="/message">
             <label for="Friends">Choose a Friend:</label>
             <select name="Friends" id="Friends">
               <option value="volvo">Volvo</option>
@@ -26,12 +26,12 @@
         <p class="message user_message">Hi</p>
     </div>
     <div class="footer">
-        <form>
-            <input type="text" name="Enter your message" id="input">
-            <button>SEND</button>
+        <form action="/message" method="POST">
+            <input id="input_message" type="text" placeholder="Type your message and hit enter">
+            <p class="result"></p>
+            <script src="js/encryptbundle.js"></script>
         </form>
     </div>
-    <script src="js/encryptbundle.js"></script>
 </div>
 </body>
 </main>
