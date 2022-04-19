@@ -79,15 +79,16 @@ def returnUserKey(username):
 @post('/encryptMessage')
 def encryptEndpoint():
     msg = request.json.get('message')
-    iv = request.json.get('iv')
-    sessionKey = request.json.get('sessionKey')
-    model.store_encrypted_msg(msg)
-    return
+    encryptmsg = request.json.get('encrypt')
+    #sessionKey = request.json.get('sessionKey')
+    print(msg, encryptmsg)
+    return model.store_encrypted_msg(encryptmsg)
 
 @get('/decryptMessage')
 def decryptEndpoint():
     encryptedMsg = model.return_encrypted_msg()
-    return encryptedMsg
+    data = {'encrypted' : encryptedMsg}
+    return data
 
 #-----------------------------------------------------------------------------
 # Pages
@@ -190,7 +191,7 @@ def post_message():
     '''
     # Handle the form processing
     message = request.forms.get('message')
-    return model.store_message(message)
+    return #model.store_message(message)
 
 
 #-----------------------------------------------------------------------------

@@ -152,9 +152,13 @@ def get_user_key(username):
     return {"PublicKey" : pk}
 
 def store_encrypted_msg(message):
-    msgFile = open("AliceBob.txt", "a")
-    msgFile.write(message+"\n")
-    msgFile.close()
+    if len(message) == 0:
+        return page_view("invalid", reason="Cannot send message of zero length")
+    else:
+        msgFile = open("AliceBob.txt", "a")
+        msgFile.write(message+"\n")
+        msgFile.close()
+        return page_view("message")
 
 
 def return_encrypted_msg():
