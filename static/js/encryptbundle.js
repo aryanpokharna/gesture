@@ -28246,20 +28246,30 @@ let bttn = document.getElementById('submitMsg');
 // }).then(post=> {post.PublicKey})
 // //const pk = request.get('PublicKey')
 // console.log(request)
+let textReply = document.getElementById('user1')
+let textReply1 = document.getElementById('user2')
+var valuefromRequest;
+const request = fetch("/decryptMessage").then(data=> {
+    return data.json();
+}).then(post=> {textReply.textContent = post.lastmsg; textReply1.textContent = post.secondlast;})
 
+console.log(request.json())
 // const input = document.querySelector('message');
 // const log = document.getElementById('message_input');
 // input.addEventListener('input', store_msg);
 
 // var msgSend = document.querySelector('input');
 // var result = document.getElementsByClassName('result');
-var key = crypto.subtle.generateKey({
+var Mainkey = 
+
+crypto.subtle.generateKey({
     name : "AES-GCM",
     length : 256,
 },
     true,
     ['encrypt', 'decrypt']
 ).then(function(key){
+    Mainkey = key
     console.log(key);
 })
 
@@ -28272,7 +28282,7 @@ function encryptString(string){
         iv: iv,
         additionalData: ArrayBuffer,
     },
-    key,
+    Mainkey,
     encoded
     )
 }

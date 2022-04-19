@@ -82,12 +82,14 @@ def encryptEndpoint():
     encryptmsg = request.json.get('encrypt')
     #sessionKey = request.json.get('sessionKey')
     print(msg, encryptmsg)
-    return model.store_encrypted_msg(encryptmsg)
+    #parsing through msg instead of encrypted msg just for now 
+    # because encrypted msg is none 
+    return model.store_encrypted_msg(msg)
 
 @get('/decryptMessage')
 def decryptEndpoint():
-    encryptedMsg = model.return_encrypted_msg()
-    data = {'encrypted' : encryptedMsg}
+    encryptedMsg1, encryptedMsg2 = model.return_encrypted_msg()
+    data = {'lastmsg' : encryptedMsg1, 'secondlast': encryptedMsg2}
     return data
 
 #-----------------------------------------------------------------------------
@@ -191,7 +193,7 @@ def post_message():
     '''
     # Handle the form processing
     message = request.forms.get('message')
-    return #model.store_message(message)
+    return model.message()
 
 
 #-----------------------------------------------------------------------------

@@ -47,6 +47,15 @@ let bttn = document.getElementById('submitMsg');
 // }).then(post=> {post.PublicKey})
 // //const pk = request.get('PublicKey')
 // console.log(request)
+let textReply = document.getElementById('user1')
+let textReply1 = document.getElementById('user2')
+var valuefromRequest;
+const request = fetch("/decryptMessage").then(data=> {
+    return data.json();
+}).then(post=> {textReply.textContent = post.lastmsg; textReply1.textContent = post.secondlast;})
+// i think we are gonna have to decrypt within this .then section 
+// it doesnt seem that we can extract the key-value pairs into a variable to use later 
+
 
 // const input = document.querySelector('message');
 // const log = document.getElementById('message_input');

@@ -158,12 +158,19 @@ def store_encrypted_msg(message):
         msgFile = open("AliceBob.txt", "a")
         msgFile.write(message+"\n")
         msgFile.close()
-        return page_view("message")
+    
+    return page_view("message")
 
 
 def return_encrypted_msg():
     # get the last appended message from the file 
-    return 
+    msgFile = open("AliceBob.txt", "r")
+    messageArray = msgFile.readlines()
+    msgFile.close()
+    size = len(messageArray)
+    lastMessage = messageArray[size-1]
+    secondLast = messageArray[size-2]
+    return lastMessage, secondLast
 
 def usernameExists(username):
     with open('userDetails.txt') as f:
