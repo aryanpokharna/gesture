@@ -93,8 +93,8 @@ var Mainkey = crypto.subtle.generateKey({
         console.error(err)
     });
 })
-console.log(btoa(localStorage.getItem("publicKey")))
-console.log(btoa(localStorage.getItem("secretKey")))
+var key1 = btoa(localStorage.getItem("publicKey"))
+//console.log(btoa(localStorage.getItem("secretKey")))
 
 function encryptString(string){
     var encoder = new TextEncoder();
@@ -105,7 +105,7 @@ function encryptString(string){
         iv: iv,
         additionalData: ArrayBuffer,
     },
-    Mainkey,
+    key1,
     encoded
     )
 }
