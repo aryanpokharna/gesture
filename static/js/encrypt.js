@@ -52,7 +52,7 @@ var Mainkey = crypto.subtle
       });
   });
 
-async function generateKey(alg, scope) {
+  async function generateKey(alg, scope) {
     return new Promise(function(resolve) {
       var genkey = crypto.subtle.generateKey(alg, true, scope)
       genkey.then(function (pair) {
@@ -235,24 +235,34 @@ var scopeSign = ["sign", "verify"]
 var scopeEncrypt = ["encrypt", "decrypt"]
 var vector = crypto.getRandomValues(new Uint8Array(16))
 
-bttn.addEventListener("click", function () {
+
+const encrypted = generateKey(encryptAlgorithm, scopeEncrypt).then(function(keys) {
+
+  console.log("<== KEYS ==> ")
+
+  encryptData(vector, keys.publicKey, msg).then(function(encryptedData) {
+    encrypted = arrayBufferToBase64(encryptedData)
+    console.log("<== ENCRYPTED MESSAGE ==> ", encrypted, " <==ACTUAL MESSAGE ==> ", msg)
+    localStorage.setItem('enc', arrayBufferToBase64(encryptedData))
+  })
+})
+
+
+bttn.addEventListener("click", async function () {
 
   let msg = document.getElementById("input_message").value;
   console.log("<== USER ENTERED MESSAGE ==> ", msg);
 
-  var encrypted = '';
+  const encrypted = await generateKey(encryptAlgorithm, scopeEncrypt).then(function(keys) {
 
-  // generateKey(encryptAlgorithm, scopeEncrypt).then(function(keys) {
+      console.log("<== KEYS ==> ")
 
-  //     console.log("<== KEYS ==> ")
-
-  //     encryptData(vector, keys.publicKey, msg).then(function(encryptedData) {
-  //       encrypted = arrayBufferToBase64(encryptedData)
-  //       console.log("<== ENCRYPTED MESSAGE ==> ", encrypted, " <==ACTUAL MESSAGE ==> ", msg)
-  //       localStorage.setItem('enc', arrayBufferToBase64(encryptedData))
-  //     })
-
-  //   })
+      encryptData(vector, keys.publicKey, msg).then(function(encryptedData) {
+        encrypted = arrayBufferToBase64(encryptedData)
+        console.log("<== ENCRYPTED MESSAGE ==> ", encrypted, " <==ACTUAL MESSAGE ==> ", msg)
+        localStorage.setItem('enc', arrayBufferToBase64(encryptedData))
+      })
+    })
 
   var data = { message: msg, encrypt: localStorage.getItem('enc') };
   console.log("<== ENCRYPTED MESSAGE RETRIEVED FROM LOCAL ==> ", localStorage.getItem('enc'));
