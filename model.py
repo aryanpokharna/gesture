@@ -108,17 +108,13 @@ def register_store(username, password):
     # Front-End Username & Password Requirement Checking
     if (len(username) <= 0) and (len(password) <= 0):
         return page_view("invalid", reason="Incorrect Length of Username or Password")
-        # return handle_errors(reason="Incorrect Length of Username or Password")
-        # return page_view("handle_errors", reason="Incorrect Length of Username or Password")
     elif usernameExists(username):
         return page_view("invalid", reason="Username Already Exists")
-        # return handle_errors("Username Already Exists")
-        # return page_view("handle_errors", reason="Username Already Exists")
     else:
         salt = secrets.token_hex(32)
         salted_string = password+salt
         hashed_pwd = hashlib.sha256(salted_string.encode('utf-8')).hexdigest()
-
+        
         # Appending to .txt file
         user_info = open("userDetails.txt", "a")
         user_info.write(username + "," + hashed_pwd + "," + salt + "\n")
@@ -151,12 +147,12 @@ def get_user_key(username):
     i+=10
     return {"PublicKey" : pk}
 
-def store_encrypted_msg(message):
-    if len(message) == 0:
+def store_encrypted_msg(encrypted_msg):
+    if len(encrypted_msg) == 0:
         return page_view("invalid", reason="Cannot send message of zero length")
     else:
         msgFile = open("AliceBob.txt", "a")
-        msgFile.write(message+"\n")
+        msgFile.write(encrypted_msg+"\n")
         msgFile.close()
     
     return page_view("message")

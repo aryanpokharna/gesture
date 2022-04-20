@@ -1,7 +1,6 @@
 let bttn = document.getElementById("submitMsg");
 let textReply = document.getElementById("user1");
 let textReply1 = document.getElementById("user2");
-var valuefromRequest;
 
 const request = fetch("/decryptMessage")
   .then((data) => {
@@ -12,79 +11,7 @@ const request = fetch("/decryptMessage")
     textReply1.textContent = post.secondlast;
   });
 
-var Mainkey = await crypto.subtle
-  .generateKey(
-    {
-      name: "RSA-OAEP",
-      modulusLength: 2048,
-      hash: { name: "SHA-256" },
-      publicExponent: new Uint8Array([1, 0, 1]),
-    },
-    true,
-    ["encrypt", "decrypt"]
-  )
-  .then(function (key) {
-    // console.log(key);
-    window.crypto.subtle
-      .exportKey("pkcs8", key.privateKey)
-      .then(function (privateKey) {
-        let byteCode = String.fromCharCode.apply(
-          null,
-          new Uint8Array(privateKey)
-        );
-        // console.log(window.btoa(byteCode));
-        localStorage.setItem("secretKey", byteCode);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-    window.crypto.subtle
-      .exportKey("spki", key.publicKey)
-      .then(function (publicKey) {
-        let byteCode = String.fromCharCode.apply(
-          null,
-          new Uint8Array(publicKey)
-        );
-        // console.log(window.btoa(byteCode));
-        localStorage.setItem("publicKey", byteCode);
-      })
-      .catch(function (err) {
-        console.error(err);
-      });
-  });
-
-// var key1 = localStorage.getItem("publicKey");
-//var key2 = JSON.parse(key1)
-// var retKey = window.crypto.subtle.importKey(
-//     'spki',
-//     key1,
-//     {
-//         name: "RSA-OAEP",
-//         hash: {name: "SHA-256"}, 
-//     },
-//     true,
-//     ["encrypt", "decrypt"]
-// ).then(function(key){
-//     console.log(key)
-// });
-
-// function encryptString(string, rawKey) {
-//   var encoder = new TextEncoder();
-//   var encoded = encoder.encode(string);
-//   var iv = crypto.getRandomValues(new Uint8Array(12));
-  
-//   return crypto.subtle.encrypt(
-//     {
-//       name: "AES-GCM",
-//       iv: iv,
-//       additionalData: ArrayBuffer,
-//     },
-//     key1,
-//     encoded
-//   );
-// }
-
-async function generateKey(alg, scope) {
+  async function generateKey(alg, scope) {
     return new Promise(function(resolve) {
       var genkey = crypto.subtle.generateKey(alg, true, scope)
       genkey.then(function (pair) {
@@ -128,7 +55,6 @@ async function generateKey(alg, scope) {
     }
     return str
   }
-
 
   function arrayBufferToBase64(arr) {
     return btoa(String.fromCharCode.apply(null, new Uint8Array(arr)))
@@ -220,8 +146,8 @@ async function generateKey(alg, scope) {
     return crypto.subtle.verify(signAlgorithm, pub, sig, data)
   }
 
-  function encryptData(vector, key, data) {
-    return crypto.subtle.encrypt(
+  async function encryptData(vector, key, data) {
+    return await crypto.subtle.encrypt(
       {
         name: "RSA-OAEP",
         iv: vector
@@ -231,8 +157,8 @@ async function generateKey(alg, scope) {
     )
   }
 
-  function decryptData(vector, key, data) {
-    return crypto.subtle.decrypt(
+  async function decryptData(vector, key, data) {
+    return await crypto.subtle.decrypt(
         {
           name: "RSA-OAEP",
           iv: vector
@@ -268,79 +194,69 @@ var scopeSign = ["sign", "verify"]
 var scopeEncrypt = ["encrypt", "decrypt"]
 var vector = crypto.getRandomValues(new Uint8Array(16))
 
-generateKey(signAlgorithm, scopeSign).then(function(pair) {
-    exportPemKeys(pair).then(function(keys) {
-      console.log(JSON.stringify(keys.privateKey))
-      console.log(JSON.stringify(keys.publicKey))
-      signData(pair.privateKey, _data).then(function(signedData) {
-        console.log(arrayBufferToBase64(signedData))
-        _signedData = signedData
-        testVerifySig(pair.publicKey, signedData, textToArrayBuffer(_data)).then(function(result) {
-         console.log(result)
-          
-        })
-      })
-      // load keys and re-check signature
-      importPublicKey(keys.publicKey).then(function(key) {
-        testVerifySig(key, _signedData, textToArrayBuffer(_data)).then(function(result) {
-          console.log("Signature verified after importing PEM public key:", result)
-        })
-      })
-      // should output `Signature verified: true` twice in the console
+const msg = document.getElementById("input_message").addEventListener("click");
+console.log("<== USER ENTERED MESSAGE ==> ", msg);
+
+const encrypted = generateKey(encryptAlgorithm, scopeEncrypt).then(function(keys) {
+
+    console.log("<== KEYS ==> ")
+
+    encryptData(vector, keys.publicKey, msg).then(function(encryptedData) {
+      console.log("<== ENCRYPTED MESSAGE ==> ", arrayBufferToBase64(encryptedData), " <==ACTUAL MESSAGE ==> ", msg)
+      localStorage.setItem('enc', arrayBufferToBase64(encryptedData))
     })
-})
-// generateKey(encryptAlgorithm, scopeEncrypt).then(function(keys) {
-//     encryptData(vector, keys.publicKey, _data).then(function(encryptedData) {
-//       console.log('Encrypted text:')
-//       console.log(arrayBufferToBase64(encryptedData))
-//       encrypted = arrayBufferToBase64(encryptedData)
-//       localStorage.setItem('enc', arrayBufferToBase64(encryptedData))
-//       decryptData(vector, keys.privateKey, encryptedData).then(function(result) {
-//         console.log('Encryption outcome:')
-//         console.log(arrayBufferToText(result))
-//         console.log((arrayBufferToText(result) === _data))
+  })
+
+  var data = { message: msg, encrypt: localStorage.getItem('enc')};
+  console.log("<== ENCRYPTED MESSAGE RETRIEVED FROM LOCAL ==> ", localStorage.getItem('enc'));
+
+  fetch("/encryptMessage", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      "Accept": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success", data);
+    })
+    .catch((error) => {
+      console.error("Error", error);
+    });
+
+// bttn.addEventListener("click", async function () {
+
+//   let msg = document.getElementById("input_message").value;
+//   console.log("<== USER ENTERED MESSAGE ==> ", msg);
+
+//   const encrypted = await generateKey(encryptAlgorithm, scopeEncrypt).then(function(keys) {
+
+//       console.log("<== KEYS ==> ")
+
+//       encryptData(vector, keys.publicKey, msg).then(function(encryptedData) {
+//         console.log("<== ENCRYPTED MESSAGE ==> ", arrayBufferToBase64(encryptedData), " <==ACTUAL MESSAGE ==> ", msg)
+//         localStorage.setItem('enc', arrayBufferToBase64(encryptedData))
 //       })
 //     })
-//   })
-// Test encryption
 
-  bttn.addEventListener("click", function () {
-    let msg = document.getElementById("input_message").value;
-    console.log("GTEJHRJKSADFH ", msg);
-    // const encrypted = encryptString(msg).then(function (encrypted) {
-    //   console.log(new Uint8Array(encrypted));
-    //   return new Uint8Array(encrypted);
-    // });
-    const encrypted = '';
-    generateKey(encryptAlgorithm, scopeEncrypt).then(function(keys) {
-        encryptData(vector, keys.publicKey, msg).then(function(encryptedData) {
-          console.log('Encrypted text:')
-          console.log(arrayBufferToBase64(encryptedData))
-          encrypted = arrayBufferToBase64(encryptedData)
-          localStorage.setItem('enc', arrayBufferToBase64(encryptedData))
-          decryptData(vector, keys.privateKey, encryptedData).then(function(result) {
-            console.log('Encryption outcome:')
-            console.log(arrayBufferToText(result))
-            console.log((arrayBufferToText(result) === _data))
-          })
-        })
-      })
-    const data = { message: msg, encrypt: localStorage.getItem('enc') };
-    console.log("ENCRYPTED GET ITEM:", localStorage.getItem('enc'));
-  
-    fetch("/encryptMessage", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        "Accept": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success", data);
-      })
-      .catch((error) => {
-        console.error("Error", error);
-      });
-  });
+//   var data = { message: msg, encrypt: localStorage.getItem('enc')};
+//   console.log("<== ENCRYPTED MESSAGE RETRIEVED FROM LOCAL ==> ", localStorage.getItem('enc'));
+
+//   fetch("/encryptMessage", {
+//     method: "POST",
+//     headers: {
+//       "Content-type": "application/json",
+//       "Accept": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log("Success", data);
+//     })
+//     .catch((error) => {
+//       console.error("Error", error);
+//     });
+// });
