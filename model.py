@@ -170,7 +170,8 @@ def return_encrypted_msg():
     size = len(messageArray)
     lastMessage = messageArray[size-1]
     secondLast = messageArray[size-2]
-    return lastMessage, secondLast
+    encryptedData = {'lastmsg': lastMessage, 'secondlast': secondLast}
+    return encryptedData
 
 def usernameExists(username):
     with open('userDetails.txt') as f:

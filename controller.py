@@ -88,8 +88,8 @@ def encryptEndpoint():
 
 @get('/decryptMessage')
 def decryptEndpoint():
-    encryptedMsg1, encryptedMsg2 = model.return_encrypted_msg()
-    data = {'lastmsg' : encryptedMsg1, 'secondlast': encryptedMsg2}
+    data = model.return_encrypted_msg()
+    #data = {'lastmsg' : encryptedMsg1, 'secondlast': encryptedMsg2}
     return data
 
 #-----------------------------------------------------------------------------
