@@ -81,7 +81,11 @@ def encryptEndpoint():
     msg = request.json.get('message')
     encryptmsg = request.json.get('encrypt')
     #sessionKey = request.json.get('sessionKey')
-    print(msg, encryptmsg, "hkjk")
+
+
+    print(msg, encryptmsg, "testing") ## -> after "encryptmsg" is not none any more, we would just store it to a .txt file on server
+
+
     #parsing through msg instead of encrypted msg just for now 
     # because encrypted msg is none 
     return model.store_encrypted_msg(msg)
