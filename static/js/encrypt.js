@@ -287,7 +287,19 @@ generateKey(signAlgorithm, scopeSign).then(function(pair) {
       // should output `Signature verified: true` twice in the console
     })
 })
-
+generateKey(encryptAlgorithm, scopeEncrypt).then(function(keys) {
+    encryptData(vector, keys.publicKey, _data).then(function(encryptedData) {
+      console.log('Encrypted text:')
+      console.log(arrayBufferToBase64(encryptedData))
+      encrypted = arrayBufferToBase64(encryptedData)
+      localStorage.setItem('enc', arrayBufferToBase64(encryptedData))
+      decryptData(vector, keys.privateKey, encryptedData).then(function(result) {
+        console.log('Encryption outcome:')
+        console.log(arrayBufferToText(result))
+        console.log((arrayBufferToText(result) === _data))
+      })
+    })
+  })
 // Test encryption
 
   bttn.addEventListener("click", function () {
@@ -297,19 +309,19 @@ generateKey(signAlgorithm, scopeSign).then(function(pair) {
     //   return new Uint8Array(encrypted);
     // });
     const encrypted = '';
-    generateKey(encryptAlgorithm, scopeEncrypt).then(function(keys) {
-        encryptData(vector, keys.publicKey, msg).then(function(encryptedData) {
-          console.log('Encrypted text:')
-          console.log(arrayBufferToBase64(encryptedData))
-          encrypted = arrayBufferToBase64(encryptedData)
-          localStorage.setItem('enc', arrayBufferToBase64(encryptedData))
-          decryptData(vector, keys.privateKey, encryptedData).then(function(result) {
-            console.log('Encryption outcome:')
-            console.log(arrayBufferToText(result))
-            console.log((arrayBufferToText(result) === _data))
-          })
-        })
-      })
+    // generateKey(encryptAlgorithm, scopeEncrypt).then(function(keys) {
+    //     encryptData(vector, keys.publicKey, msg).then(function(encryptedData) {
+    //       console.log('Encrypted text:')
+    //       console.log(arrayBufferToBase64(encryptedData))
+    //       encrypted = arrayBufferToBase64(encryptedData)
+    //       localStorage.setItem('enc', arrayBufferToBase64(encryptedData))
+    //       decryptData(vector, keys.privateKey, encryptedData).then(function(result) {
+    //         console.log('Encryption outcome:')
+    //         console.log(arrayBufferToText(result))
+    //         console.log((arrayBufferToText(result) === _data))
+    //       })
+    //     })
+    //   })
     const data = { message: msg, encrypt: localStorage.getItem('enc') };
     console.log(localStorage.getItem('enc'))
   
